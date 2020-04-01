@@ -35,6 +35,7 @@ namespace SNETCracker
         private int timeOut = 5;
 
         private Boolean crackerOneCount = true;//只检查一个账户
+        private Boolean usingDefaultPorts = true;//使用默认列表中的端口
         public int successCount = 0;
         public long creackerSumCount = 0;
         public long allCrackCount = 0;
@@ -439,6 +440,7 @@ namespace SNETCracker
                 this.list_ip_break.Clear();
                 this.list_ip_user_break.Clear();
                 Boolean isScanport = this.chk_isScanPort.Checked;
+                Boolean isUsingDefaultPorts = this.chk_usingDefaultPorts.Checked;
                 stp = new SmartThreadPool();
                 stp.MaxThreads = maxThread;
                 creackerSumCount = 0;
@@ -448,37 +450,88 @@ namespace SNETCracker
                 //计算端口扫描总数
                 if (isScanport)
                 {
-                    foreach (string serviceName in this.services_list.CheckedItems)
+
+                    if (!isUsingDefaultPorts)
                     {
-                        string[] ports = this.services[serviceName].Port.Split(',');
-                        scanPortsSumCount += this.list_target.Count * ports.Length;
+                        scanPortsSumCount += this.list_target.Count;
                     }
-                }
-                //更新状态
-                this.Invoke(new update(updateStatus));
-
-                foreach (string serviceName in this.services_list.CheckedItems)
-                {
-                    string[] ports = this.services[serviceName].Port.Split(',');
-                    foreach (string sport in ports)
+                    else
                     {
-                        int port = int.Parse(sport);
-
-                        foreach (string ip in list_target)
+                        foreach (string serviceName in this.services_list.CheckedItems)
                         {
-                            if (!isScanport)
-                            {
-                                list_cracker.Add(ip + ":" + port + ":" + serviceName);
-                            }
-                            else
-                            {
-                                stp.QueueWorkItem<string, string, int>(ScanPort, ip, serviceName, port);
-                                stp.WaitFor(maxThread);
-                            }
+                            string[] ports = this.services[serviceName].Port.Split(',');
+                            scanPortsSumCount += this.list_target.Count * ports.Length;
                         }
                     }
 
                 }
+                //更新状态
+                this.Invoke(new update(updateStatus));
+
+                if (!isUsingDefaultPorts)
+                {
+                    foreach (string ip in list_target)
+                    {
+                        if (!isScanport)
+                        {
+                            if (this.services_list.CheckedItems.Count > 1)
+                            {
+                                LogWarning("不使用默认端口情况下请选择单一服务扫描");
+                            }
+                            else
+                            {
+                                foreach (string serviceName in this.services_list.CheckedItems)
+                                {
+                                    list_cracker.Add(ip + ":" + serviceName);
+                                }
+                            }
+                            
+                        }
+                        else
+                        {
+                            if (this.services_list.CheckedItems.Count > 1)
+                            {
+                                LogWarning("不使用默认端口情况下请选择单一服务扫描");
+                            }
+                            else
+                            {
+                                foreach (string serviceName in this.services_list.CheckedItems)
+                                {
+                                    string[] ip_port = ip.Split(':');
+                                    stp.QueueWorkItem<string, string, int>(ScanPort, ip_port[0], serviceName, int.Parse(ip_port[1]));
+                                    stp.WaitFor(maxThread);
+                                }
+                            }
+
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (string serviceName in this.services_list.CheckedItems)
+                    {
+                        string[] ports = this.services[serviceName].Port.Split(',');
+                        foreach (string sport in ports)
+                        {
+                            int port = int.Parse(sport);
+
+                            foreach (string ip in list_target)
+                            {
+                                if (!isScanport)
+                                {
+                                    list_cracker.Add(ip + ":" + port + ":" + serviceName);
+                                }
+                                else
+                                {
+                                    stp.QueueWorkItem<string, string, int>(ScanPort, ip, serviceName, port);
+                                    stp.WaitFor(maxThread);
+                                }
+                            }
+                        }
+
+                    }
+                }
+
 
                 stp.WaitForIdle();
                 if (isScanport)

@@ -103,6 +103,7 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.chk_usingDefaultPorts = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.cms_lvw.SuspendLayout();
@@ -118,6 +119,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chk_usingDefaultPorts);
             this.groupBox1.Controls.Add(this.chk_crackerOneCount);
             this.groupBox1.Controls.Add(this.chk_notAutoSelectDic);
             this.groupBox1.Controls.Add(this.chk_isScanPort);
@@ -151,7 +153,7 @@
             this.chk_crackerOneCount.AutoSize = true;
             this.chk_crackerOneCount.Checked = true;
             this.chk_crackerOneCount.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chk_crackerOneCount.Location = new System.Drawing.Point(374, 20);
+            this.chk_crackerOneCount.Location = new System.Drawing.Point(305, 18);
             this.chk_crackerOneCount.Name = "chk_crackerOneCount";
             this.chk_crackerOneCount.Size = new System.Drawing.Size(108, 16);
             this.chk_crackerOneCount.TabIndex = 5;
@@ -298,9 +300,9 @@
             // 
             // btn_importList
             // 
-            this.btn_importList.Location = new System.Drawing.Point(305, 16);
+            this.btn_importList.Location = new System.Drawing.Point(218, 14);
             this.btn_importList.Name = "btn_importList";
-            this.btn_importList.Size = new System.Drawing.Size(63, 23);
+            this.btn_importList.Size = new System.Drawing.Size(67, 23);
             this.btn_importList.TabIndex = 2;
             this.btn_importList.Text = "导入地址";
             this.btn_importList.UseVisualStyleBackColor = true;
@@ -331,7 +333,7 @@
             // 
             this.txt_target.Location = new System.Drawing.Point(54, 16);
             this.txt_target.Name = "txt_target";
-            this.txt_target.Size = new System.Drawing.Size(231, 21);
+            this.txt_target.Size = new System.Drawing.Size(158, 21);
             this.txt_target.TabIndex = 2;
             // 
             // label8
@@ -811,6 +813,18 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "弱口令列表";
             // 
+            // chk_usingDefaultPorts
+            // 
+            this.chk_usingDefaultPorts.AutoSize = true;
+            this.chk_usingDefaultPorts.Checked = true;
+            this.chk_usingDefaultPorts.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_usingDefaultPorts.Location = new System.Drawing.Point(413, 18);
+            this.chk_usingDefaultPorts.Name = "chk_usingDefaultPorts";
+            this.chk_usingDefaultPorts.Size = new System.Drawing.Size(96, 16);
+            this.chk_usingDefaultPorts.TabIndex = 12;
+            this.chk_usingDefaultPorts.Text = "使用默认端口";
+            this.chk_usingDefaultPorts.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -921,6 +935,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.CheckBox chk_usingDefaultPorts;
     }
 }
 
